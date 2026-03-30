@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DataSourceBadge } from "@/components/ui/data-source";
 import {
   PieChart,
   Pie,
@@ -33,9 +34,12 @@ export function MarketShareChart({ competitors, metric }: Props) {
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-base">
-          Market Share by {metric === "vessels" ? "Fleet Count" : "Total DWT"}
-        </CardTitle>
+        <div className="space-y-1">
+          <CardTitle className="text-base">
+            Market Share by {metric === "vessels" ? "Fleet Count" : "Total DWT"}
+          </CardTitle>
+          <DataSourceBadge source="Clarksons / Internal Analysis" isRealTime={false} description="Fleet and capacity data compiled from Clarksons Shipping Intelligence and internal competitive analysis. Updated quarterly." />
+        </div>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={350}>

@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DataSourceBadge } from "@/components/ui/data-source";
 import {
   ComposedChart,
   Line,
@@ -27,7 +28,11 @@ export function RateForecastChart({ data }: Props) {
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-base">Rate Forecast (12-Month Forward)</CardTitle>
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <CardTitle className="text-base">Rate Forecast (12-Month Forward)</CardTitle>
+          <DataSourceBadge source="Internal Model" isRealTime={false} description="Forecast generated from G2 Ocean's internal quantitative model combining historical rate data, seasonal decomposition, forward freight agreement (FFA) curves, and macroeconomic indicators. Updated weekly." />
+        </div>
+        <p className="text-xs text-muted-foreground mt-1">Solid line = actuals, dashed = forecast, shaded area = 95% confidence interval</p>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={400}>

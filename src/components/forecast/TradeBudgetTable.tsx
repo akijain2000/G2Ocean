@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DataSourceBadge } from "@/components/ui/data-source";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { SEGMENTS, type TradeBudgetData } from "@/lib/types";
@@ -37,7 +38,10 @@ export function TradeBudgetTable({ data }: Props) {
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="text-base">Trade Budget vs Actual ({data.length} routes)</CardTitle>
+        <div className="space-y-1">
+          <CardTitle className="text-base">Trade Budget vs Actual ({data.length} routes)</CardTitle>
+          <DataSourceBadge source="Internal Budget System" isRealTime={false} description="Budget rates set during annual planning vs current market rates from SeaRates/internal systems. Positive variance (green) means the market is above budget; negative (red) means below." />
+        </div>
       </CardHeader>
       <CardContent>
         <div className="max-h-[500px] overflow-auto">

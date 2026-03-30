@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DataSourceBadge } from "@/components/ui/data-source";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import type { FFAPosition } from "@/lib/types";
@@ -37,7 +38,10 @@ export function FFAPositionTable({ positions }: Props) {
     <Card>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base">FFA Positions ({positions.length})</CardTitle>
+          <div className="space-y-1">
+            <CardTitle className="text-base">FFA Positions ({positions.length})</CardTitle>
+            <DataSourceBadge source="Baltic Exchange / Brokers" isRealTime={false} description="FFA positions valued against Baltic Exchange settlement rates. Contract data from broker confirmations. M2M updated at end of each business day." />
+          </div>
           <span className={`text-sm font-semibold ${totalMtm >= 0 ? "text-emerald-600" : "text-red-600"}`}>
             Total M2M: ${totalMtm.toLocaleString()}
           </span>

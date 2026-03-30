@@ -11,6 +11,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { DataSourceBadge } from "@/components/ui/data-source";
 import { SEGMENTS, type FreightRateData, type ShippingSegment } from "@/lib/types";
 import { formatCurrency, formatDateShort } from "@/lib/utils/formatters";
 import { useMemo } from "react";
@@ -58,7 +59,13 @@ export function FreightRateChart({ data, selectedSegments }: Props) {
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-base">Freight Rate Trends (90 Days)</CardTitle>
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <CardTitle className="text-base">Freight Rate Trends (90 Days)</CardTitle>
+          <DataSourceBadge source="SeaRates API" isRealTime={false} description="Daily freight rates per route and segment. Shows time charter equivalent (TCE) rates in USD/day over a rolling 90-day window. When API keys are configured, data switches to live SeaRates feeds." />
+        </div>
+        <p className="text-xs text-muted-foreground mt-1">
+          Time charter equivalent (TCE) rates in USD/day across selected vessel segments and trade routes
+        </p>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={380}>

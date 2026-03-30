@@ -6,6 +6,7 @@ import { FleetComparison } from "@/components/competitors/FleetComparison";
 import type { CompetitorData } from "@/lib/types";
 import { getCompetitors } from "@/lib/data";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DefinitionBox } from "@/components/ui/data-source";
 
 export default function CompetitorsPage() {
   const [competitors, setCompetitors] = useState<CompetitorData[]>([]);
@@ -57,11 +58,19 @@ export default function CompetitorsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">Competitor Analysis</h2>
-        <p className="text-sm text-muted-foreground mt-1">
-          Fleet composition, market share, and competitive positioning
-        </p>
+      <div className="space-y-3">
+        <div>
+          <h2 className="text-2xl font-bold">Competitor Analysis</h2>
+          <p className="text-sm text-muted-foreground mt-1">
+            Market share, fleet composition, and competitive positioning
+          </p>
+        </div>
+        <DefinitionBox title="What is shown on this page?">
+          <p><strong>Market Share by Vessels</strong> — Percentage of fleet count each operator controls. Indicates how many ships each company operates within the open hatch, semi-open, multipurpose, and dry bulk segments.</p>
+          <p><strong>Market Share by DWT</strong> — Percentage of total deadweight tonnage. A better measure of actual cargo-carrying capacity than vessel count, since vessel sizes vary significantly.</p>
+          <p><strong>Fleet Composition by Segment</strong> — Breakdown of each competitor&apos;s fleet into the four vessel segments. Reveals strategic focus — e.g., G2 Ocean is heavily weighted toward open hatch.</p>
+          <p><strong>Average Fleet Age</strong> — Mean age of each operator&apos;s fleet in years. Newer fleets tend to have lower fuel consumption, better environmental compliance, and lower maintenance costs.</p>
+        </DefinitionBox>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

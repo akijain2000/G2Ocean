@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DataSourceBadge } from "@/components/ui/data-source";
 import {
   LineChart,
   Line,
@@ -48,7 +49,11 @@ export function CommodityPriceChart({ seriesList }: Props) {
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-base">Commodity Prices</CardTitle>
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <CardTitle className="text-base">Commodity Prices</CardTitle>
+          <DataSourceBadge source="FRED / IMF / LME" isRealTime={false} description="Commodity price indices and spot prices from IMF Primary Commodity Prices, London Metal Exchange (LME), and FRED. Monthly averages with a 1-month lag." />
+        </div>
+        <p className="text-xs text-muted-foreground mt-1">Iron ore, coal, pulp, aluminum, and steel spot/index prices relevant to G2 Ocean cargo types</p>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={350}>

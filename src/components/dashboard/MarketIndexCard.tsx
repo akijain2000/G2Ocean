@@ -39,6 +39,7 @@ export function MarketIndexCard({ index }: { index: MarketIndex }) {
         <div className="mt-2 text-xs text-muted-foreground">
           {isPositive ? "+" : ""}{formatNumber(index.change)} today
         </div>
+        <p className="text-[10px] text-muted-foreground/60 mt-1.5">Source: Baltic Exchange | Static</p>
       </CardContent>
     </Card>
   );

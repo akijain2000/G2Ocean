@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { DataSourceBadge } from "@/components/ui/data-source";
 import {
   AreaChart,
   Area,
@@ -21,7 +22,10 @@ export function TradeVolumeChart({ series }: Props) {
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-base">{series.title}</CardTitle>
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <CardTitle className="text-base">{series.title}</CardTitle>
+          <DataSourceBadge source="FRED / CPB" isRealTime={false} description="World trade volume index from the CPB Netherlands Bureau, accessed via the Federal Reserve Economic Data (FRED) API. Monthly data with a 2-month publication lag." />
+        </div>
         <CardDescription>{series.unit}</CardDescription>
       </CardHeader>
       <CardContent>

@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DataSourceBadge } from "@/components/ui/data-source";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { SEGMENTS, type NewbuildingData } from "@/lib/types";
@@ -17,9 +18,12 @@ export function NewbuildingTracker({ newbuildings }: Props) {
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="text-base">
-          Newbuilding Orders ({newbuildings.length} vessels)
-        </CardTitle>
+        <div className="space-y-1">
+          <CardTitle className="text-base">
+            Newbuilding Orders ({newbuildings.length} vessels)
+          </CardTitle>
+          <DataSourceBadge source="Clarksons Research" isRealTime={false} description="Newbuilding order data from Clarksons Shipping Intelligence Network. Shows vessels on order or under construction at global shipyards." />
+        </div>
       </CardHeader>
       <CardContent>
         <Table>

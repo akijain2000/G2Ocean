@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DataSourceBadge } from "@/components/ui/data-source";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { SEGMENTS, COMMODITIES, type VesselData } from "@/lib/types";
@@ -60,7 +61,10 @@ export function FleetTable({ vessels }: Props) {
     <Card>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base">Fleet Overview ({filtered.length} vessels)</CardTitle>
+          <div className="space-y-1">
+            <CardTitle className="text-base">Fleet Overview ({filtered.length} vessels)</CardTitle>
+            <DataSourceBadge source="MarineTraffic AIS" isRealTime={false} description="Vessel positions and status from AIS transponder data. In production, this data would be fetched from the MarineTraffic API in near real-time." />
+          </div>
           <div className="relative">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <input

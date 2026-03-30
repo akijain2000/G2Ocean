@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DataSourceBadge } from "@/components/ui/data-source";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import type { BunkerHedge } from "@/lib/types";
@@ -43,7 +44,10 @@ export function BunkerHedgeTable({ hedges }: Props) {
     <Card>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base">Bunker Hedges ({hedges.length})</CardTitle>
+          <div className="space-y-1">
+            <CardTitle className="text-base">Bunker Hedges ({hedges.length})</CardTitle>
+            <DataSourceBadge source="Platts / ICE" isRealTime={false} description="Bunker hedge positions valued against S&P Global Platts benchmark prices. VLSFO/HSFO priced on Singapore/Rotterdam markers; MGO on NWE marker. Contract data from OTC broker confirmations." />
+          </div>
           <span className={`text-sm font-semibold ${totalMtm >= 0 ? "text-emerald-600" : "text-red-600"}`}>
             Total M2M: ${totalMtm.toLocaleString()}
           </span>

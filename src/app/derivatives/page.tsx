@@ -8,6 +8,7 @@ import { BunkerPriceChart } from "@/components/derivatives/BunkerPriceChart";
 import type { FFAPosition, BunkerHedge, RiskSummary } from "@/lib/types";
 import { getFFAPositions, getBunkerHedges, getRiskSummary, getBunkerPriceHistory } from "@/lib/data";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DefinitionBox } from "@/components/ui/data-source";
 
 export default function DerivativesPage() {
   const [ffaPositions, setFfaPositions] = useState<FFAPosition[]>([]);
@@ -70,11 +71,20 @@ export default function DerivativesPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">Derivatives & Risk</h2>
-        <p className="text-sm text-muted-foreground mt-1">
-          FFA positions, bunker hedging, and commercial risk management
-        </p>
+      <div className="space-y-3">
+        <div>
+          <h2 className="text-2xl font-bold">Derivatives & Risk</h2>
+          <p className="text-sm text-muted-foreground mt-1">
+            FFA positions, bunker hedging, and commercial risk management
+          </p>
+        </div>
+        <DefinitionBox title="What is shown on this page?">
+          <p><strong>FFA (Freight Forward Agreement)</strong> — A financial derivative that allows ship operators and charterers to hedge freight rate risk. An FFA is a contract to settle the difference between a fixed rate and the actual market rate at a future date. &quot;Buy&quot; positions profit when rates rise; &quot;Sell&quot; positions profit when rates fall. Used by G2 Ocean to lock in rates on key trade routes.</p>
+          <p><strong>Mark-to-Market (M2M)</strong> — The unrealized profit or loss on an open derivative position, calculated as the difference between the contract price and the current market price, multiplied by the position size. Green = profit, Red = loss.</p>
+          <p><strong>Bunker Hedging</strong> — Financial contracts to fix the future purchase price of marine fuel (bunker). Protects against fuel cost volatility. G2 Ocean hedges VLSFO (Very Low Sulphur Fuel Oil, the main fuel since IMO 2020), HSFO (High Sulphur Fuel Oil, used with scrubbers), and MGO (Marine Gas Oil, used in emission control areas).</p>
+          <p><strong>Value at Risk (VaR)</strong> — A statistical measure of the maximum expected loss over a 30-day period at 95% confidence level. A VaR of $500K means there is only a 5% chance of losing more than $500K in the next 30 days. Used by the Commercial Derivative Forum to monitor portfolio risk.</p>
+          <p><strong>Hedge Ratio</strong> — The percentage of total exposure that is covered by hedging instruments. A ratio of 68% means 68% of anticipated fuel costs and freight exposure are locked in through derivatives.</p>
+        </DefinitionBox>
       </div>
 
       {riskSummary && <RiskOverviewCards summary={riskSummary} />}

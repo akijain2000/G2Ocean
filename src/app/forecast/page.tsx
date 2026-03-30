@@ -8,6 +8,7 @@ import { SEGMENTS, type ForecastPoint, type TradeBudgetData, type SeasonalPatter
 import { getForecastData, getTradeBudget, getSeasonalPatterns } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DefinitionBox } from "@/components/ui/data-source";
 
 export default function ForecastPage() {
   const [forecast, setForecast] = useState<ForecastPoint[]>([]);
@@ -70,11 +71,18 @@ export default function ForecastPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">Forecasting</h2>
-        <p className="text-sm text-muted-foreground mt-1">
-          Long-term rate forecasts, trade budget analysis, and seasonal patterns
-        </p>
+      <div className="space-y-3">
+        <div>
+          <h2 className="text-2xl font-bold">Forecasting</h2>
+          <p className="text-sm text-muted-foreground mt-1">
+            Long-term rate forecasts, trade budget analysis, and seasonal patterns
+          </p>
+        </div>
+        <DefinitionBox title="What is shown on this page?">
+          <p><strong>Rate Forecast</strong> — A 12-month forward projection of freight rates based on historical trends, seasonal patterns, and market fundamentals. The solid blue line shows actual historical rates, while the dashed orange line shows the forecasted rate. The shaded blue area represents the 95% confidence interval — the range within which the actual rate is expected to fall with 95% probability. Wider bands indicate greater uncertainty further into the future.</p>
+          <p><strong>Trade Budget vs Actual</strong> — Compares the budgeted (planned) freight rate for each trade route against the current prevailing market rate. Green variance means the market rate exceeds budget (favorable for vessel operators), red means it is below budget (unfavorable). Used in the annual trade budget and forecasting process.</p>
+          <p><strong>Seasonal Patterns</strong> — Historical monthly rate patterns showing the average, minimum, and maximum rates for each calendar month. Reveals predictable seasonal cycles driven by crop harvests, industrial production cycles, and weather patterns that affect shipping demand.</p>
+        </DefinitionBox>
       </div>
 
       <div className="flex items-center gap-2 flex-wrap">

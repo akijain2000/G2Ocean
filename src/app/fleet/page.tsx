@@ -9,6 +9,7 @@ import { getVessels, getNewbuildings } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DefinitionBox } from "@/components/ui/data-source";
 
 export default function FleetMonitorPage() {
   const [vessels, setVessels] = useState<VesselData[]>([]);
@@ -71,11 +72,21 @@ export default function FleetMonitorPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">Fleet Monitor</h2>
-        <p className="text-sm text-muted-foreground mt-1">
-          Track vessel positions, fleet composition, and newbuilding developments
-        </p>
+      <div className="space-y-3">
+        <div>
+          <h2 className="text-2xl font-bold">Fleet Monitor</h2>
+          <p className="text-sm text-muted-foreground mt-1">
+            Track vessel positions, fleet composition, and newbuilding developments
+          </p>
+        </div>
+        <DefinitionBox title="What is shown on this page?">
+          <p><strong>AIS Position Data</strong> — Automatic Identification System (AIS) is a maritime tracking system using VHF radio transponders on ships. Positions shown are based on the latest AIS reports, typically updated every few minutes for vessels at sea.</p>
+          <p><strong>DWT (Deadweight Tonnage)</strong> — The maximum weight a vessel can carry, including cargo, fuel, freshwater, and stores. It is the standard measure of a vessel&apos;s carrying capacity.</p>
+          <p><strong>IMO Number</strong> — A unique 7-digit identification number assigned by the International Maritime Organization to every ocean-going vessel. It remains constant throughout a ship&apos;s lifetime regardless of name or flag changes.</p>
+          <p><strong>Status</strong> — &quot;Laden&quot; means the vessel is loaded with cargo and in transit; &quot;Ballast&quot; means it is sailing empty to pick up its next cargo; &quot;Port&quot; means it is docked at a terminal.</p>
+          <p><strong>Cargo Types</strong> — G2 Ocean specializes in Pulp, Paper, Forest Products, Aluminum, Steel, Industrial Minerals, and Project Cargo.</p>
+          <p><strong>Newbuilding Orders</strong> — Vessels currently being constructed at shipyards. &quot;Under Construction&quot; means hull assembly has started; &quot;On Order&quot; means the contract is signed but construction has not yet begun.</p>
+        </DefinitionBox>
       </div>
 
       <div className="flex flex-col gap-2">

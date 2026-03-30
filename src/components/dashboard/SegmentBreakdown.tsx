@@ -11,6 +11,7 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
+import { DataSourceBadge } from "@/components/ui/data-source";
 import { SEGMENTS, type FreightRateData } from "@/lib/types";
 import { formatCurrency } from "@/lib/utils/formatters";
 import { useMemo } from "react";
@@ -41,7 +42,13 @@ export function SegmentBreakdown({ data }: { data: FreightRateData[] }) {
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-base">Average Rates by Segment</CardTitle>
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <CardTitle className="text-base">Average Rates by Segment</CardTitle>
+          <DataSourceBadge source="SeaRates API" isRealTime={false} description="Average TCE rates across all routes within each vessel segment. Computed from the latest available rate snapshot for each route." />
+        </div>
+        <p className="text-xs text-muted-foreground mt-1">
+          Mean time charter rates across all routes for each vessel segment type
+        </p>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={380}>

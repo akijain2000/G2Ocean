@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DataSourceBadge } from "@/components/ui/data-source";
 import {
   LineChart,
   Line,
@@ -28,7 +29,11 @@ export function BunkerPriceChart({ data }: Props) {
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-base">Bunker Fuel Prices (90-Day)</CardTitle>
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <CardTitle className="text-base">Bunker Fuel Prices (90-Day)</CardTitle>
+          <DataSourceBadge source="S&P Global Platts" isRealTime={false} description="Daily bunker fuel spot prices from S&P Global Platts. VLSFO (0.5% sulphur) is the primary fuel post-IMO 2020; HSFO (3.5% sulphur) is used with exhaust gas cleaning systems; MGO is used in emission control areas." />
+        </div>
+        <p className="text-xs text-muted-foreground mt-1">Daily spot prices for VLSFO, HSFO, and MGO marine fuels in USD per metric ton</p>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={350}>

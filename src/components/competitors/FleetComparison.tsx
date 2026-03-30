@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DataSourceBadge } from "@/components/ui/data-source";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -30,7 +31,10 @@ export function FleetComparison({ competitors }: Props) {
     <div className="space-y-6">
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-base">Fleet Composition by Segment</CardTitle>
+          <div className="space-y-1">
+            <CardTitle className="text-base">Fleet Composition by Segment</CardTitle>
+            <DataSourceBadge source="Clarksons / Internal Analysis" isRealTime={false} description="Stacked segment breakdown shows how many vessels each competitor has in each segment type. Based on Clarksons fleet data cross-referenced with internal intelligence." />
+          </div>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={350}>

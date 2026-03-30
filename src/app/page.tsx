@@ -8,6 +8,7 @@ import { SEGMENTS, type FreightRateData, type MarketIndex, type ShippingSegment 
 import { getMarketIndices, getFreightRates } from "@/lib/data";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
+import { DataSourceBadge, DefinitionBox } from "@/components/ui/data-source";
 
 export default function MarketOverview() {
   const [indices, setIndices] = useState<MarketIndex[]>([]);
@@ -80,11 +81,24 @@ export default function MarketOverview() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">Market Overview</h2>
-        <p className="text-sm text-muted-foreground mt-1">
-          Key indices, freight rates, and segment performance at a glance
-        </p>
+      <div className="space-y-3">
+        <div>
+          <h2 className="text-2xl font-bold">Market Overview</h2>
+          <p className="text-sm text-muted-foreground mt-1">
+            Key indices, freight rates, and segment performance at a glance
+          </p>
+        </div>
+        <DefinitionBox title="What is shown on this page?">
+          <p><strong>Baltic Dry Index (BDI)</strong> — A composite index of dry bulk shipping rates published daily by the Baltic Exchange in London. It tracks rates across Capesize, Panamax, and Supramax vessel classes and is widely used as a barometer of global trade demand.</p>
+          <p><strong>Capesize / Panamax / Supramax / Handysize Indices</strong> — Sub-indices of the BDI for specific vessel size classes. Capesize (&gt;100k DWT) mainly carry iron ore and coal; Panamax (60-80k DWT) carry grain and coal; Supramax (45-60k DWT) and Handysize (15-35k DWT) handle a wider range of bulk cargoes.</p>
+          <p><strong>Open Hatch Rate</strong> — The average time charter equivalent rate for open hatch vessels, G2 Ocean&apos;s primary fleet type. Open hatch vessels feature wide, unobstructed cargo holds suited for forest products, aluminum, steel, and project cargo.</p>
+          <p><strong>Freight Rate Trends</strong> — 90-day rolling TCE (Time Charter Equivalent) rates per trade route and segment. TCE normalizes voyage earnings to a daily USD rate, allowing comparison across different voyage durations and fuel costs.</p>
+        </DefinitionBox>
+        <DataSourceBadge
+          source="Baltic-style indices & SeaRates (demo)"
+          isRealTime={false}
+          description="Figures on this overview are sample data for the G2 Ocean dashboard. Wire Baltic Exchange, SeaRates, or internal pricing feeds for production use."
+        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">

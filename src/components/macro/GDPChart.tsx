@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DataSourceBadge } from "@/components/ui/data-source";
 import {
   BarChart,
   Bar,
@@ -46,7 +47,11 @@ export function GDPChart({ seriesList }: Props) {
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-base">GDP by Region (Current USD)</CardTitle>
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <CardTitle className="text-base">GDP by Region (Current USD)</CardTitle>
+          <DataSourceBadge source="World Bank / FRED" isRealTime={false} description="Annual GDP data in current US dollars from the World Bank national accounts, accessed via FRED. Published annually with approximately a 1-year lag." />
+        </div>
+        <p className="text-xs text-muted-foreground mt-1">Annual GDP for key shipping demand regions — economic growth drives import/export volumes</p>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={350}>

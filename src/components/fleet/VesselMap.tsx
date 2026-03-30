@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DataSourceBadge } from "@/components/ui/data-source";
 import { SEGMENTS, COMMODITIES, type VesselData } from "@/lib/types";
 import dynamic from "next/dynamic";
 
@@ -54,7 +55,10 @@ export function VesselMap({ vessels }: Props) {
     <Card>
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base">Fleet Positions</CardTitle>
+          <div className="space-y-1">
+            <CardTitle className="text-base">Fleet Positions</CardTitle>
+            <DataSourceBadge source="MarineTraffic AIS" isRealTime={false} description="Vessel positions plotted from Automatic Identification System (AIS) data. Color indicates vessel segment. Click a marker for details." />
+          </div>
           <div className="flex items-center gap-3 text-xs">
             {SEGMENTS.map((seg) => (
               <div key={seg.value} className="flex items-center gap-1">

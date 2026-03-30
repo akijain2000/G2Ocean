@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DataSourceBadge } from "@/components/ui/data-source";
 import {
   BarChart,
   Bar,
@@ -21,7 +22,10 @@ export function SeasonalPatternChart({ data }: Props) {
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-base">Seasonal Rate Patterns (Monthly)</CardTitle>
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <CardTitle className="text-base">Seasonal Rate Patterns (Monthly)</CardTitle>
+          <DataSourceBadge source="Historical Analysis" isRealTime={false} description="5-year historical average, minimum, and maximum TCE rates for each calendar month. Reveals predictable seasonal cycles driven by crop harvests, industrial output, and weather patterns." />
+        </div>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={350}>
