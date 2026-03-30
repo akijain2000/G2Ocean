@@ -4,14 +4,14 @@ import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { SEGMENTS, type VesselData } from "@/lib/types";
+import { SEGMENTS, COMMODITIES, type VesselData } from "@/lib/types";
 import { ArrowUpDown, Search } from "lucide-react";
 
 interface Props {
   vessels: VesselData[];
 }
 
-type SortKey = "name" | "segment" | "dwt" | "built" | "status";
+type SortKey = "name" | "segment" | "dwt" | "built" | "status" | "cargo";
 
 export function FleetTable({ vessels }: Props) {
   const [search, setSearch] = useState("");
@@ -84,6 +84,7 @@ export function FleetTable({ vessels }: Props) {
                   { key: "dwt" as SortKey, label: "DWT" },
                   { key: "built" as SortKey, label: "Built" },
                   { key: "status" as SortKey, label: "Status" },
+                  { key: "cargo" as SortKey, label: "Cargo" },
                 ].map((col) => (
                   <TableHead key={col.key}>
                     <button
@@ -123,6 +124,19 @@ export function FleetTable({ vessels }: Props) {
                   <TableCell>{v.built}</TableCell>
                   <TableCell>
                     <Badge variant={statusVariant(v.status)}>{v.status}</Badge>
+                  </TableCell>
+                  <TableCell>
+                    {v.cargo ? (
+                      <div className="flex items-center gap-1.5">
+                        <div
+                          className="h-2 w-2 rounded-full"
+                          style={{ backgroundColor: COMMODITIES.find((c) => c.value === v.cargo)?.color || "#666" }}
+                        />
+                        <span className="text-sm">{COMMODITIES.find((c) => c.value === v.cargo)?.label || v.cargo}</span>
+                      </div>
+                    ) : (
+                      <span className="text-muted-foreground">—</span>
+                    )}
                   </TableCell>
                   <TableCell>{v.destination || "—"}</TableCell>
                   <TableCell className="text-muted-foreground">{v.eta || "—"}</TableCell>

@@ -22,6 +22,8 @@ const MODULE_OPTIONS = [
   { id: "fleet", label: "Fleet Data", description: "Vessel positions, fleet composition, newbuildings" },
   { id: "competitors", label: "Competitor Analysis", description: "Market share and fleet comparison" },
   { id: "macro", label: "Macro Trends", description: "Trade volumes, commodity prices, GDP" },
+  { id: "forecast", label: "Forecasting", description: "Rate forecasts, trade budget variance, seasonal patterns" },
+  { id: "derivatives", label: "Derivatives & Risk", description: "FFA positions, bunker hedges, risk summary" },
 ];
 
 const TEMPLATE_OPTIONS = [

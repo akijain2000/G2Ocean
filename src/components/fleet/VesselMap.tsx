@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { SEGMENTS, type VesselData } from "@/lib/types";
+import { SEGMENTS, COMMODITIES, type VesselData } from "@/lib/types";
 import dynamic from "next/dynamic";
 
 const MapContainer = dynamic(
@@ -100,6 +100,7 @@ export function VesselMap({ vessels }: Props) {
                       <p>IMO: {vessel.imo}</p>
                       <p>DWT: {vessel.dwt.toLocaleString()}</p>
                       <p>Status: {vessel.status}</p>
+                      {vessel.cargo && <p>Cargo: {COMMODITIES.find((c) => c.value === vessel.cargo)?.label || vessel.cargo}</p>}
                       {vessel.speed != null && <p>Speed: {vessel.speed} kn</p>}
                       {vessel.destination && <p>Dest: {vessel.destination}</p>}
                       {vessel.eta && <p>ETA: {vessel.eta}</p>}

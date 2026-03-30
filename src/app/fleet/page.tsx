@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { VesselMap } from "@/components/fleet/VesselMap";
 import { FleetTable } from "@/components/fleet/FleetTable";
 import { NewbuildingTracker } from "@/components/fleet/NewbuildingTracker";
-import { SEGMENTS, type VesselData, type NewbuildingData, type ShippingSegment } from "@/lib/types";
+import { SEGMENTS, COMMODITIES, type VesselData, type NewbuildingData, type ShippingSegment, type CommodityType } from "@/lib/types";
 import { getVessels, getNewbuildings } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -14,6 +14,7 @@ export default function FleetMonitorPage() {
   const [vessels, setVessels] = useState<VesselData[]>([]);
   const [newbuildings, setNewbuildings] = useState<NewbuildingData[]>([]);
   const [selectedSegment, setSelectedSegment] = useState<ShippingSegment | "all">("all");
+  const [selectedCargo, setSelectedCargo] = useState<CommodityType | "all">("all");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,10 +34,11 @@ export default function FleetMonitorPage() {
     fetchData();
   }, [fetchData]);
 
-  const filteredVessels =
-    selectedSegment === "all"
-      ? vessels
-      : vessels.filter((v) => v.segment === selectedSegment);
+  const filteredVessels = vessels.filter((v) => {
+    if (selectedSegment !== "all" && v.segment !== selectedSegment) return false;
+    if (selectedCargo !== "all" && v.cargo !== selectedCargo) return false;
+    return true;
+  });
   const filteredBuilds =
     selectedSegment === "all"
       ? newbuildings
@@ -76,28 +78,53 @@ export default function FleetMonitorPage() {
         </p>
       </div>
 
-      <div className="flex items-center gap-2 flex-wrap">
-        <span className="text-sm font-medium text-muted-foreground mr-1">Filter:</span>
-        <button onClick={() => setSelectedSegment("all")}>
-          <Badge variant={selectedSegment === "all" ? "default" : "outline"} className="cursor-pointer">
-            All Segments
-          </Badge>
-        </button>
-        {SEGMENTS.map((seg) => (
-          <button key={seg.value} onClick={() => setSelectedSegment(seg.value)}>
-            <Badge
-              variant={selectedSegment === seg.value ? "default" : "outline"}
-              className="cursor-pointer"
-              style={
-                selectedSegment === seg.value
-                  ? { backgroundColor: seg.color, borderColor: seg.color }
-                  : undefined
-              }
-            >
-              {seg.label}
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-sm font-medium text-muted-foreground mr-1">Segment:</span>
+          <button onClick={() => setSelectedSegment("all")}>
+            <Badge variant={selectedSegment === "all" ? "default" : "outline"} className="cursor-pointer">
+              All Segments
             </Badge>
           </button>
-        ))}
+          {SEGMENTS.map((seg) => (
+            <button key={seg.value} onClick={() => setSelectedSegment(seg.value)}>
+              <Badge
+                variant={selectedSegment === seg.value ? "default" : "outline"}
+                className="cursor-pointer"
+                style={
+                  selectedSegment === seg.value
+                    ? { backgroundColor: seg.color, borderColor: seg.color }
+                    : undefined
+                }
+              >
+                {seg.label}
+              </Badge>
+            </button>
+          ))}
+        </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-sm font-medium text-muted-foreground mr-1">Cargo:</span>
+          <button onClick={() => setSelectedCargo("all")}>
+            <Badge variant={selectedCargo === "all" ? "default" : "outline"} className="cursor-pointer">
+              All Cargo
+            </Badge>
+          </button>
+          {COMMODITIES.map((com) => (
+            <button key={com.value} onClick={() => setSelectedCargo(com.value)}>
+              <Badge
+                variant={selectedCargo === com.value ? "default" : "outline"}
+                className="cursor-pointer"
+                style={
+                  selectedCargo === com.value
+                    ? { backgroundColor: com.color, borderColor: com.color }
+                    : undefined
+                }
+              >
+                {com.label}
+              </Badge>
+            </button>
+          ))}
+        </div>
       </div>
 
       <Tabs defaultValue="map">

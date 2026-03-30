@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ReportBuilder } from "@/components/reports/ReportBuilder";
 import { ReportPreview } from "@/components/reports/ReportPreview";
 import { exportToPDF, exportToExcel } from "@/lib/utils/export";
-import type { MarketIndex, FreightRateData, VesselData, NewbuildingData, CompetitorData, MacroSeriesData } from "@/lib/types";
+import type { MarketIndex, FreightRateData, VesselData, NewbuildingData, CompetitorData, MacroSeriesData, TradeBudgetData, FFAPosition, BunkerHedge, RiskSummary } from "@/lib/types";
 import {
   getMarketIndices,
   getFreightRates,
@@ -12,8 +12,12 @@ import {
   getNewbuildings,
   getCompetitors,
   getAllMacroSeries,
+  getTradeBudget,
+  getFFAPositions,
+  getBunkerHedges,
+  getRiskSummary,
 } from "@/lib/data";
-import { formatNumber, formatCompact, formatPercent, formatDate } from "@/lib/utils/formatters";
+import { formatNumber, formatCompact, formatPercent, formatDate, formatCurrency } from "@/lib/utils/formatters";
 
 interface ExportData {
   indices?: MarketIndex[];
@@ -22,6 +26,10 @@ interface ExportData {
   newbuildings?: NewbuildingData[];
   competitors?: CompetitorData[];
   macro?: MacroSeriesData[];
+  budget?: TradeBudgetData[];
+  ffaPositions?: FFAPosition[];
+  bunkerHedges?: BunkerHedge[];
+  riskSummary?: RiskSummary;
 }
 
 interface ReportConfig {
@@ -58,6 +66,14 @@ export default function ReportsPage() {
       }
       if (modules.includes("macro")) {
         data.macro = getAllMacroSeries();
+      }
+      if (modules.includes("forecast")) {
+        data.budget = getTradeBudget();
+      }
+      if (modules.includes("derivatives")) {
+        data.ffaPositions = getFFAPositions();
+        data.bunkerHedges = getBunkerHedges();
+        data.riskSummary = getRiskSummary();
       }
 
       setPreviewData(data);
@@ -166,6 +182,57 @@ function buildSections(data: ExportData, modules: string[]) {
         rows: latestData.map((d) => [formatDate(d.date), formatNumber(d.value, 2), series.unit]),
       });
     }
+  }
+
+  if (modules.includes("forecast") && data.budget) {
+    sections.push({
+      title: "Trade Budget vs Actual",
+      headers: ["Route", "Segment", "Budget (USD/Day)", "Current (USD/Day)", "Variance", "Var %", "Voyages"],
+      rows: data.budget.map((b) => [
+        b.route, b.segment, formatNumber(b.budgetedRate), formatNumber(b.currentRate),
+        `${b.variance >= 0 ? "+" : ""}${formatNumber(b.variance)}`,
+        formatPercent(b.variancePercent), b.voyages,
+      ]),
+    });
+  }
+
+  if (modules.includes("derivatives") && data.ffaPositions) {
+    sections.push({
+      title: "FFA Positions",
+      headers: ["Route", "Period", "Direction", "Contract Rate", "Current Rate", "Lots", "M2M P&L", "Expiry"],
+      rows: data.ffaPositions.map((p) => [
+        p.route, p.period, p.direction.toUpperCase(),
+        formatCurrency(p.contractRate), formatCurrency(p.currentRate),
+        p.lots, formatCurrency(p.mtm), p.expiryDate,
+      ]),
+    });
+  }
+
+  if (modules.includes("derivatives") && data.bunkerHedges) {
+    sections.push({
+      title: "Bunker Hedges",
+      headers: ["Fuel Type", "Period", "Hedged ($/MT)", "Current ($/MT)", "Volume (MT)", "M2M P&L", "Expiry"],
+      rows: data.bunkerHedges.map((h) => [
+        h.fuelType, h.period, `$${h.hedgedPrice}`, `$${h.currentPrice}`,
+        formatNumber(h.volume), formatCurrency(h.mtm), h.expiryDate,
+      ]),
+    });
+  }
+
+  if (modules.includes("derivatives") && data.riskSummary) {
+    const s = data.riskSummary;
+    sections.push({
+      title: "Risk Summary",
+      headers: ["Metric", "Value"],
+      rows: [
+        ["Net Mark-to-Market", formatCurrency(s.netMtM)],
+        ["Total FFA Exposure", formatCompact(s.totalFFAExposure)],
+        ["Total Bunker Exposure", formatCompact(s.totalBunkerExposure)],
+        ["Freight VaR (95%, 30d)", formatCompact(s.freightVaR)],
+        ["Bunker VaR (95%, 30d)", formatCompact(s.bunkerVaR)],
+        ["Hedge Ratio", formatPercent(s.hedgeRatio * 100, 0)],
+      ],
+    });
   }
 
   return sections;

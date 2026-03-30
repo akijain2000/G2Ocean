@@ -19,7 +19,9 @@ const COMMODITY_COLORS: Record<string, string> = {
   PALLFNFINDEXM: "#0066CC",
   PIORECRUSDM: "#CC0033",
   PCOALAUUSDM: "#333333",
-  PWHEAMTUSDM: "#FF8C00",
+  PPULPUSDM: "#8B5E3C",
+  PALUMUSDM: "#A8A9AD",
+  PSTEEUSDM: "#4682B4",
 };
 
 interface Props {

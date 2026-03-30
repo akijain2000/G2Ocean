@@ -11,6 +11,8 @@ import {
   Anchor,
   ChevronLeft,
   ChevronRight,
+  LineChart,
+  Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -20,6 +22,8 @@ const navItems = [
   { href: "/fleet", label: "Fleet Monitor", icon: Ship },
   { href: "/competitors", label: "Competitors", icon: Users },
   { href: "/macro", label: "Macro Trends", icon: TrendingUp },
+  { href: "/forecast", label: "Forecasting", icon: LineChart },
+  { href: "/derivatives", label: "Derivatives & Risk", icon: Shield },
   { href: "/reports", label: "Reports", icon: FileText },
 ];
 

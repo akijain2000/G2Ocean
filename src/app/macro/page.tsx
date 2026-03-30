@@ -58,7 +58,7 @@ export default function MacroTrendsPage() {
 
   const tradeVolume = allSeries.find((s) => s.seriesId === "WDTIVOL");
   const commoditySeries = allSeries.filter((s) =>
-    ["PALLFNFINDEXM", "PIORECRUSDM", "PCOALAUUSDM", "PWHEAMTUSDM"].includes(s.seriesId)
+    ["PALLFNFINDEXM", "PIORECRUSDM", "PCOALAUUSDM", "PPULPUSDM", "PALUMUSDM", "PSTEEUSDM"].includes(s.seriesId)
   );
   const gdpSeries = allSeries.filter((s) =>
     ["NYGDPMKTPCDWLD", "NYGDPMKTPCDCHN", "NYGDPMKTPCDEUU"].includes(s.seriesId)
