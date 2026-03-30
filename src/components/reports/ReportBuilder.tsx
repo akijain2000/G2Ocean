@@ -50,7 +50,7 @@ export function ReportBuilder({ config, onConfigChange, onGenerate, loading }: P
       <CardContent className="space-y-6">
         <div>
           <label className="text-sm font-medium mb-3 block">Report Template</label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {TEMPLATE_OPTIONS.map((tpl) => (
               <button
                 key={tpl.id}

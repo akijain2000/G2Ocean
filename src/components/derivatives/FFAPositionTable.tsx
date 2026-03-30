@@ -37,7 +37,7 @@ export function FFAPositionTable({ positions }: Props) {
   return (
     <Card>
       <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="space-y-1">
             <CardTitle className="text-base">FFA Positions ({positions.length})</CardTitle>
             <DataSourceBadge source="Baltic Exchange / Brokers" isRealTime={false} description="FFA positions valued against Baltic Exchange settlement rates. Contract data from broker confirmations. M2M updated at end of each business day." />

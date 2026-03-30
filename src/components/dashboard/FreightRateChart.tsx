@@ -111,7 +111,8 @@ export function FreightRateChart({ data, selectedSegments }: Props) {
         </div>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={380}>
+        <div className="h-[280px] md:h-[380px]">
+        <ResponsiveContainer width="100%" height="100%">
           {showDrill ? (
             <LineChart data={routeData}>
               <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
@@ -178,6 +179,7 @@ export function FreightRateChart({ data, selectedSegments }: Props) {
             </LineChart>
           )}
         </ResponsiveContainer>
+        </div>
       </CardContent>
     </Card>
   );

@@ -43,7 +43,7 @@ export function BunkerHedgeTable({ hedges }: Props) {
   return (
     <Card>
       <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="space-y-1">
             <CardTitle className="text-base">Bunker Hedges ({hedges.length})</CardTitle>
             <DataSourceBadge source="Platts / ICE" isRealTime={false} description="Bunker hedge positions valued against S&P Global Platts benchmark prices. VLSFO/HSFO priced on Singapore/Rotterdam markers; MGO on NWE marker. Contract data from OTC broker confirmations." />

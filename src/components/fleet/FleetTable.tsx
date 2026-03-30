@@ -60,19 +60,19 @@ export function FleetTable({ vessels }: Props) {
   return (
     <Card>
       <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="space-y-1">
             <CardTitle className="text-base">Fleet Overview ({filtered.length} vessels)</CardTitle>
             <DataSourceBadge source="MarineTraffic AIS" isRealTime={false} description="Vessel positions and status from AIS transponder data. In production, this data would be fetched from the MarineTraffic API in near real-time." />
           </div>
-          <div className="relative">
+          <div className="relative w-full sm:w-auto">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <input
               type="text"
               placeholder="Search vessels..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="h-9 w-64 rounded-md border border-input bg-background pl-8 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              className="h-9 w-full sm:w-64 rounded-md border border-input bg-background pl-8 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
             />
           </div>
         </div>

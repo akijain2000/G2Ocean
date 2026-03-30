@@ -45,7 +45,7 @@ export function VesselMap({ vessels }: Props) {
           <CardTitle className="text-base">Fleet Positions</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-[450px] bg-muted rounded-lg animate-pulse" />
+          <div className="h-[300px] md:h-[450px] bg-muted rounded-lg animate-pulse" />
         </CardContent>
       </Card>
     );
@@ -54,12 +54,12 @@ export function VesselMap({ vessels }: Props) {
   return (
     <Card>
       <CardHeader className="pb-2">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="space-y-1">
             <CardTitle className="text-base">Fleet Positions</CardTitle>
             <DataSourceBadge source="MarineTraffic AIS" isRealTime={false} description="Vessel positions plotted from Automatic Identification System (AIS) data. Color indicates vessel segment. Click a marker for details." />
           </div>
-          <div className="flex items-center gap-3 text-xs">
+          <div className="flex items-center gap-2 sm:gap-3 text-xs flex-wrap">
             {SEGMENTS.map((seg) => (
               <div key={seg.value} className="flex items-center gap-1">
                 <div
@@ -73,7 +73,7 @@ export function VesselMap({ vessels }: Props) {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="h-[450px] rounded-lg overflow-hidden border">
+        <div className="h-[300px] md:h-[450px] rounded-lg overflow-hidden border">
           <MapContainer
             center={[20, 0]}
             zoom={2}

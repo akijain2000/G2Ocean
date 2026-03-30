@@ -56,7 +56,7 @@ export function ReportPreview({ data, modules }: Props) {
               <BarChart3 className="h-4 w-4 text-primary" />
               Market Indices
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {data.indices.map((idx) => (
                 <div key={idx.name} className="p-2 rounded-md bg-muted/50 text-xs">
                   <p className="text-muted-foreground">{idx.name}</p>
@@ -75,7 +75,7 @@ export function ReportPreview({ data, modules }: Props) {
               <Ship className="h-4 w-4 text-primary" />
               Fleet Summary
             </div>
-            <div className="grid grid-cols-3 gap-2 text-xs">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
               <div className="p-2 rounded-md bg-muted/50">
                 <p className="text-muted-foreground">Total Vessels</p>
                 <p className="font-semibold text-lg">{data.vessels.length}</p>

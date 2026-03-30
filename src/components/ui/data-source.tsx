@@ -38,7 +38,7 @@ export function DataSourceBadge({ source, isRealTime, description }: DataSourceB
             <Info className="h-2.5 w-2.5" />
           </button>
           {showInfo && (
-            <div className="absolute top-full left-0 mt-1 z-50 max-w-xs rounded-md border bg-popover p-3 text-xs text-popover-foreground shadow-md">
+            <div className="absolute top-full right-0 sm:left-0 sm:right-auto mt-1 z-50 max-w-[min(20rem,calc(100vw-2rem))] rounded-md border bg-popover p-3 text-xs text-popover-foreground shadow-md">
               {description}
             </div>
           )}
