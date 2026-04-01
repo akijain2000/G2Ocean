@@ -11,3 +11,5 @@ services:
         sync: false
       - key: MARINETRAFFIC_API_KEY
         sync: false
+      - key: VESSELAPI_KEY
+        sync: false

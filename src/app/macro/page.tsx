@@ -4,31 +4,53 @@ import { useEffect, useState, useCallback } from "react";
 import { TradeVolumeChart } from "@/components/macro/TradeVolumeChart";
 import { CommodityPriceChart } from "@/components/macro/CommodityPriceChart";
 import { GDPChart } from "@/components/macro/GDPChart";
+import { WorldBankChart } from "@/components/macro/WorldBankChart";
+import { CurrencyChart } from "@/components/macro/CurrencyChart";
 import type { MacroSeriesData } from "@/lib/types";
 import { getAllMacroSeries } from "@/lib/data";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DataSourceBadge, DefinitionBox } from "@/components/ui/data-source";
 
+interface CurrencyTimeSeries {
+  currency: string;
+  label: string;
+  data: { date: string; value: number }[];
+}
+
 export default function MacroTrendsPage() {
   const [allSeries, setAllSeries] = useState<MacroSeriesData[]>([]);
+  const [wbSeries, setWbSeries] = useState<MacroSeriesData[]>([]);
+  const [currencies, setCurrencies] = useState<CurrencyTimeSeries[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isLive, setIsLive] = useState(false);
+  const [wbLive, setWbLive] = useState(false);
+  const [fxLive, setFxLive] = useState(false);
 
   const fetchData = useCallback(async () => {
-    try {
-      const res = await fetch("/api/macro");
-      if (res.ok) {
-        const json = await res.json();
-        setAllSeries(json.series);
-        setIsLive(json.live ?? false);
-        return;
-      }
-    } catch {
-      // API route unavailable — fall back to mock data
+    const [macroResult, wbResult, fxResult] = await Promise.allSettled([
+      fetch("/api/macro").then((r) => r.ok ? r.json() : null),
+      fetch("/api/worldbank").then((r) => r.ok ? r.json() : null),
+      fetch("/api/currencies").then((r) => r.ok ? r.json() : null),
+    ]);
+
+    if (macroResult.status === "fulfilled" && macroResult.value) {
+      setAllSeries(macroResult.value.series);
+      setIsLive(macroResult.value.live ?? false);
+    } else {
+      setAllSeries(getAllMacroSeries());
+      setIsLive(false);
     }
-    setAllSeries(getAllMacroSeries());
-    setIsLive(false);
+
+    if (wbResult.status === "fulfilled" && wbResult.value) {
+      setWbSeries(wbResult.value.series || []);
+      setWbLive(wbResult.value.live ?? false);
+    }
+
+    if (fxResult.status === "fulfilled" && fxResult.value) {
+      setCurrencies(fxResult.value.timeSeries || []);
+      setFxLive(fxResult.value.live ?? false);
+    }
   }, []);
 
   useEffect(() => {
@@ -105,6 +127,38 @@ export default function MacroTrendsPage() {
       </div>
 
       {gdpSeries.length > 0 && <GDPChart seriesList={gdpSeries} />}
+
+      {wbSeries.length > 0 && (
+        <>
+          <div className="flex items-center gap-2 pt-4">
+            <h3 className="text-lg font-semibold">World Bank Trade Indicators</h3>
+            <DataSourceBadge
+              source={wbLive ? "World Bank API (live)" : "World Bank (loading...)"}
+              isRealTime={wbLive}
+              description="Annual trade and GDP growth data from the World Bank Open Data API — free, no API key required."
+            />
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {wbSeries.map((s) => (
+              <WorldBankChart key={s.seriesId} series={s} />
+            ))}
+          </div>
+        </>
+      )}
+
+      {currencies.length > 0 && (
+        <>
+          <div className="flex items-center gap-2 pt-4">
+            <h3 className="text-lg font-semibold">Shipping Currency Rates (vs USD)</h3>
+            <DataSourceBadge
+              source={fxLive ? "Frankfurter API (live)" : "Exchange Rates (loading...)"}
+              isRealTime={fxLive}
+              description="90-day exchange rate trends for currencies relevant to G2 Ocean trade routes — free, no API key required."
+            />
+          </div>
+          <CurrencyChart currencies={currencies} />
+        </>
+      )}
     </div>
   );
 }
