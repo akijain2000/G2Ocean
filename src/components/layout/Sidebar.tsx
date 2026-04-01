@@ -13,6 +13,7 @@ import {
   ChevronRight,
   LineChart,
   Shield,
+  Newspaper,
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -20,6 +21,7 @@ import { useState, useEffect } from "react";
 
 const navItems = [
   { href: "/", label: "Market Overview", icon: BarChart3 },
+  { href: "/brief", label: "Market Brief", icon: Newspaper },
   { href: "/fleet", label: "Fleet Monitor", icon: Ship },
   { href: "/competitors", label: "Competitors", icon: Users },
   { href: "/macro", label: "Macro Trends", icon: TrendingUp },

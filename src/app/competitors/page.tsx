@@ -6,26 +6,32 @@ import { FleetComparison } from "@/components/competitors/FleetComparison";
 import type { CompetitorData } from "@/lib/types";
 import { getCompetitors } from "@/lib/data";
 import { Skeleton } from "@/components/ui/skeleton";
-import { DefinitionBox } from "@/components/ui/data-source";
+import { DataSourceBadge, DefinitionBox } from "@/components/ui/data-source";
 
 export default function CompetitorsPage() {
   const [competitors, setCompetitors] = useState<CompetitorData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isLive, setIsLive] = useState(false);
 
   const fetchData = useCallback(async () => {
     try {
-      setCompetitors(getCompetitors());
-    } catch (err) {
-      console.error("Failed to fetch competitor data:", err);
-      setError("Failed to load competitor data. Please try again.");
-    } finally {
-      setLoading(false);
+      const res = await fetch("/api/competitors");
+      if (res.ok) {
+        const json = await res.json();
+        setCompetitors(json.competitors);
+        setIsLive(json.live ?? false);
+        return;
+      }
+    } catch {
+      // API route unavailable — fall back to mock data
     }
+    setCompetitors(getCompetitors());
+    setIsLive(false);
   }, []);
 
   useEffect(() => {
-    fetchData();
+    fetchData().finally(() => setLoading(false));
   }, [fetchData]);
 
   if (loading) {
@@ -71,6 +77,13 @@ export default function CompetitorsPage() {
           <p><strong>Fleet Composition by Segment</strong> — Breakdown of each competitor&apos;s fleet into the four vessel segments. Reveals strategic focus — e.g., G2 Ocean is heavily weighted toward open hatch.</p>
           <p><strong>Average Fleet Age</strong> — Mean age of each operator&apos;s fleet in years. Newer fleets tend to have lower fuel consumption, better environmental compliance, and lower maintenance costs.</p>
         </DefinitionBox>
+        <DataSourceBadge
+          source={isLive ? "MarineTraffic API (live)" : "Sample data (demo)"}
+          isRealTime={isLive}
+          description={isLive
+            ? "Competitor fleet data sourced from MarineTraffic."
+            : "Showing curated competitor intelligence. Connect MarineTraffic API for live fleet data."}
+        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

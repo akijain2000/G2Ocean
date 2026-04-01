@@ -18,21 +18,28 @@ export default function MarketOverview() {
   );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isLive, setIsLive] = useState(false);
 
   const fetchData = useCallback(async () => {
     try {
-      setIndices(getMarketIndices());
-      setRates(getFreightRates());
-    } catch (err) {
-      console.error("Failed to fetch market data:", err);
-      setError("Failed to load market data. Please try again.");
-    } finally {
-      setLoading(false);
+      const res = await fetch("/api/market");
+      if (res.ok) {
+        const json = await res.json();
+        setIndices(json.indices);
+        setRates(json.rates);
+        setIsLive(json.live ?? false);
+        return;
+      }
+    } catch {
+      // API route unavailable (static export) — fall back to mock data
     }
+    setIndices(getMarketIndices());
+    setRates(getFreightRates());
+    setIsLive(false);
   }, []);
 
   useEffect(() => {
-    fetchData();
+    fetchData().finally(() => setLoading(false));
   }, [fetchData]);
 
   const toggleSegment = (seg: ShippingSegment) => {
@@ -95,9 +102,11 @@ export default function MarketOverview() {
           <p><strong>Freight Rate Trends</strong> — 90-day rolling TCE (Time Charter Equivalent) rates per trade route and segment. TCE normalizes voyage earnings to a daily USD rate, allowing comparison across different voyage durations and fuel costs.</p>
         </DefinitionBox>
         <DataSourceBadge
-          source="Baltic-style indices & SeaRates (demo)"
-          isRealTime={false}
-          description="Figures on this overview are sample data for the G2 Ocean dashboard. Wire Baltic Exchange, SeaRates, or internal pricing feeds for production use."
+          source={isLive ? "SeaRates API (live)" : "Sample data (demo)"}
+          isRealTime={isLive}
+          description={isLive
+            ? "Freight rates fetched from SeaRates API in real time."
+            : "Figures on this overview are sample data. Connect SeaRates or Baltic Exchange feeds for production use."}
         />
       </div>
 

@@ -30,6 +30,7 @@ jobs:
       - name: Build
         env:
           NEXT_PUBLIC_BASE_PATH: /G2Ocean
+          NEXT_PUBLIC_STATIC_EXPORT: "true"
         run: npx next build
 
       - uses: actions/upload-pages-artifact@v3

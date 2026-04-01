@@ -7,26 +7,32 @@ import { GDPChart } from "@/components/macro/GDPChart";
 import type { MacroSeriesData } from "@/lib/types";
 import { getAllMacroSeries } from "@/lib/data";
 import { Skeleton } from "@/components/ui/skeleton";
-import { DefinitionBox } from "@/components/ui/data-source";
+import { DataSourceBadge, DefinitionBox } from "@/components/ui/data-source";
 
 export default function MacroTrendsPage() {
   const [allSeries, setAllSeries] = useState<MacroSeriesData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isLive, setIsLive] = useState(false);
 
   const fetchData = useCallback(async () => {
     try {
-      setAllSeries(getAllMacroSeries());
-    } catch (err) {
-      console.error("Failed to fetch macro data:", err);
-      setError("Failed to load macro data. Please try again.");
-    } finally {
-      setLoading(false);
+      const res = await fetch("/api/macro");
+      if (res.ok) {
+        const json = await res.json();
+        setAllSeries(json.series);
+        setIsLive(json.live ?? false);
+        return;
+      }
+    } catch {
+      // API route unavailable — fall back to mock data
     }
+    setAllSeries(getAllMacroSeries());
+    setIsLive(false);
   }, []);
 
   useEffect(() => {
-    fetchData();
+    fetchData().finally(() => setLoading(false));
   }, [fetchData]);
 
   if (loading) {
@@ -84,6 +90,13 @@ export default function MacroTrendsPage() {
           <p><strong>Steel Price (HRC)</strong> — Hot-Rolled Coil steel price. Steel products are transported on open hatch and multipurpose vessels, making this an important demand indicator for G2 Ocean.</p>
           <p><strong>GDP by Region</strong> — Gross Domestic Product in current US dollars for the World, China, and the EU. GDP growth drives import/export volumes and ultimately shipping demand. China is the world&apos;s largest importer of raw materials.</p>
         </DefinitionBox>
+        <DataSourceBadge
+          source={isLive ? "FRED API (live)" : "Sample data (demo)"}
+          isRealTime={isLive}
+          description={isLive
+            ? "All macroeconomic series fetched from the Federal Reserve Economic Data (FRED) API."
+            : "Showing generated sample data. Set a FRED_API_KEY environment variable to enable live data."}
+        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

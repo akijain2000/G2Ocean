@@ -13,21 +13,27 @@ describe("Sidebar", () => {
     expect(screen.getByText("Market Intelligence")).toBeInTheDocument();
   });
 
-  it("renders all 5 navigation items", () => {
+  it("renders all 8 navigation items", () => {
     render(<Sidebar />);
     expect(screen.getByText("Market Overview")).toBeInTheDocument();
+    expect(screen.getByText("Market Brief")).toBeInTheDocument();
     expect(screen.getByText("Fleet Monitor")).toBeInTheDocument();
     expect(screen.getByText("Competitors")).toBeInTheDocument();
     expect(screen.getByText("Macro Trends")).toBeInTheDocument();
+    expect(screen.getByText("Forecasting")).toBeInTheDocument();
+    expect(screen.getByText("Derivatives & Risk")).toBeInTheDocument();
     expect(screen.getByText("Reports")).toBeInTheDocument();
   });
 
   it("navigation links have correct hrefs", () => {
     render(<Sidebar />);
     expect(screen.getByText("Market Overview").closest("a")).toHaveAttribute("href", "/");
+    expect(screen.getByText("Market Brief").closest("a")).toHaveAttribute("href", "/brief");
     expect(screen.getByText("Fleet Monitor").closest("a")).toHaveAttribute("href", "/fleet");
     expect(screen.getByText("Competitors").closest("a")).toHaveAttribute("href", "/competitors");
     expect(screen.getByText("Macro Trends").closest("a")).toHaveAttribute("href", "/macro");
+    expect(screen.getByText("Forecasting").closest("a")).toHaveAttribute("href", "/forecast");
+    expect(screen.getByText("Derivatives & Risk").closest("a")).toHaveAttribute("href", "/derivatives");
     expect(screen.getByText("Reports").closest("a")).toHaveAttribute("href", "/reports");
   });
 

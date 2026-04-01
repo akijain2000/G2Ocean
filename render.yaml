@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: g2ocean-dashboard
+    runtime: node
+    buildCommand: npm ci --legacy-peer-deps && npm run build
+    startCommand: npm start
+    envVars:
+      - key: FRED_API_KEY
+        sync: false
+      - key: SEARATES_API_KEY
+        sync: false
+      - key: MARINETRAFFIC_API_KEY
+        sync: false

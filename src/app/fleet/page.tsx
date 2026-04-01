@@ -9,7 +9,7 @@ import { getVessels, getNewbuildings } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
-import { DefinitionBox } from "@/components/ui/data-source";
+import { DataSourceBadge, DefinitionBox } from "@/components/ui/data-source";
 
 export default function FleetMonitorPage() {
   const [vessels, setVessels] = useState<VesselData[]>([]);
@@ -18,21 +18,28 @@ export default function FleetMonitorPage() {
   const [selectedCargo, setSelectedCargo] = useState<CommodityType | "all">("all");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isLive, setIsLive] = useState(false);
 
   const fetchData = useCallback(async () => {
     try {
-      setVessels(getVessels());
-      setNewbuildings(getNewbuildings());
-    } catch (err) {
-      console.error("Failed to fetch fleet data:", err);
-      setError("Failed to load fleet data. Please try again.");
-    } finally {
-      setLoading(false);
+      const res = await fetch("/api/vessels");
+      if (res.ok) {
+        const json = await res.json();
+        setVessels(json.vessels);
+        setNewbuildings(json.newbuildings);
+        setIsLive(json.live ?? false);
+        return;
+      }
+    } catch {
+      // API route unavailable — fall back to mock data
     }
+    setVessels(getVessels());
+    setNewbuildings(getNewbuildings());
+    setIsLive(false);
   }, []);
 
   useEffect(() => {
-    fetchData();
+    fetchData().finally(() => setLoading(false));
   }, [fetchData]);
 
   const filteredVessels = vessels.filter((v) => {
@@ -87,6 +94,13 @@ export default function FleetMonitorPage() {
           <p><strong>Cargo Types</strong> — G2 Ocean specializes in Pulp, Paper, Forest Products, Aluminum, Steel, Industrial Minerals, and Project Cargo.</p>
           <p><strong>Newbuilding Orders</strong> — Vessels currently being constructed at shipyards. &quot;Under Construction&quot; means hull assembly has started; &quot;On Order&quot; means the contract is signed but construction has not yet begun.</p>
         </DefinitionBox>
+        <DataSourceBadge
+          source={isLive ? "MarineTraffic API (live)" : "Sample data (demo)"}
+          isRealTime={isLive}
+          description={isLive
+            ? "Vessel positions fetched from MarineTraffic AIS feed."
+            : "Showing sample vessel positions. Connect MarineTraffic API for live AIS data."}
+        />
       </div>
 
       <div className="flex flex-col gap-2">
