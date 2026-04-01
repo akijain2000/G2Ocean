@@ -1,8 +1,8 @@
 import { getMacroSeries, getAllMacroSeries, FRED_SERIES } from "@/lib/api/fred";
 
 describe("FRED_SERIES constants", () => {
-  it("has 8 series defined", () => {
-    expect(Object.keys(FRED_SERIES)).toHaveLength(8);
+  it("has 10 series defined", () => {
+    expect(Object.keys(FRED_SERIES)).toHaveLength(10);
   });
 
   it("each series has id, title, and unit", () => {
@@ -61,9 +61,9 @@ describe("getAllMacroSeries", () => {
     delete process.env.FRED_API_KEY;
   });
 
-  it("returns data for all 8 series", async () => {
+  it("returns data for all 10 series", async () => {
     const allSeries = await getAllMacroSeries();
-    expect(allSeries).toHaveLength(8);
+    expect(allSeries).toHaveLength(10);
   });
 
   it("each series has non-empty data", async () => {
